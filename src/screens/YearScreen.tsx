@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, useWindowDimensions, StatusBar } from 'react-native';
-import { Text, FAB } from 'react-native-paper';
+import { Text, IconButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -76,15 +76,24 @@ export const YearScreen = () => {
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
       <View style={styles.container}>
         {/* 标题区域 */}
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleYear}>{currentYear}年</Text>
-          <Text style={styles.titleDate}>
-            {format(today, 'MM月dd日')} {lunarText}
-          </Text>
+        <View style={styles.header}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleYear}>{currentYear}年</Text>
+            <Text style={styles.titleDate}>
+              {format(today, 'MM月dd日')} {lunarText}
+            </Text>
+          </View>
+          <IconButton
+            icon="calendar-check"
+            size={24}
+            iconColor="#000"
+            style={styles.headerButton}
+            onPress={() => navigation.navigate('Upcoming')}
+          />
         </View>
 
         {/* 月份标题行 */}
-        <View style={styles.header}>
+        <View style={styles.monthHeader}>
           <View style={styles.monthHeaderContainer}>
             {MONTH_NAMES.map((name, index) => (
               <Text key={index} style={styles.monthHeaderText}>
@@ -126,14 +135,6 @@ export const YearScreen = () => {
           </ScrollView>
         </View>
 
-        {/* 待办事项按钮 */}
-        <FAB
-          icon="calendar-check"
-          style={styles.fab}
-          onPress={() => navigation.navigate('Upcoming')}
-          color="#fff"
-        />
-
         {/* 日期编辑弹窗 */}
         {selectedDate && (
           <DayEditModal
@@ -157,10 +158,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  titleContainer: {
+  header: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: 16,
+    paddingRight: 4,
     paddingTop: 4,
     paddingBottom: 8,
+  },
+  titleContainer: {
+    flex: 1,
   },
   titleYear: {
     fontSize: 20,
@@ -172,7 +180,10 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#666',
   },
-  header: {
+  headerButton: {
+    margin: 0,
+  },
+  monthHeader: {
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
@@ -208,11 +219,5 @@ const styles = StyleSheet.create({
   },
   emptyCellSpace: {
     height: 24,
-  },
-  fab: {
-    position: 'absolute',
-    right: 16,
-    bottom: 16,
-    backgroundColor: '#000',
   },
 }); 
