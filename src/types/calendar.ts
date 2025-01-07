@@ -1,12 +1,14 @@
-export type ColorType = 'red' | 'orange' | 'yellow' | 'green' | 'cyan' | 'blue' | 'purple' | 'gray';
+export type ColorType = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'purple' | 'pink';
 
 export interface DayRecord {
-  date: string;  // ISO 格式的日期字符串
+  date: string;
   color?: ColorType;
-  note?: string;  // 文本备注
+  note?: string;
+  completed?: boolean;
+  completedAt?: string;
 }
 
 export interface CalendarState {
-  records: Record<string, DayRecord>;  // 键是 ISO 格式的日期字符串
-  selectedDate: string | null;
+  records: Record<string, DayRecord>;
+  _persist?: any; // for redux-persist
 } 

@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, Dimensions, TextInput as RNTextInput } from 'react-native';
+import { View, StyleSheet, Dimensions, TextInput as RNTextInput, Alert } from 'react-native';
 import { Modal, Portal, Text, Button, IconButton } from 'react-native-paper';
 import { format } from 'date-fns';
 import { Lunar } from 'lunar-typescript';
@@ -34,11 +34,23 @@ export const DayEditModal: React.FC<DayEditModalProps> = ({
   const lunarText = `农历 ${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`;
 
   const handleSave = () => {
-    onSave({
+    if (!color) {
+      Alert.alert('提示', '请选择一个颜色');
+      return;
+    }
+    
+    const newRecord: DayRecord = {
       date,
       color: color as ColorType,
       note: inputValue.trim(),
+    };
+    
+    console.log('Saving record in modal:', {
+      date,
+      color,
+      note: inputValue.trim(),
     });
+    onSave(newRecord);
     onDismiss();
   };
 

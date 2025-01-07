@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from './types';
 import { YearScreen } from '../screens/YearScreen';
+import { UpcomingScreen } from '../screens/UpcomingScreen';
 
 // 临时的占位组件
 const MonthScreen = () => null;
@@ -21,6 +22,7 @@ export const AppNavigator = () => {
           contentStyle: {
             backgroundColor: '#fff',
           },
+          animation: 'slide_from_right',
         }}
       >
         <Stack.Screen 
@@ -30,6 +32,13 @@ export const AppNavigator = () => {
         <Stack.Screen 
           name="Month" 
           component={MonthScreen}
+        />
+        <Stack.Screen 
+          name="Upcoming" 
+          component={UpcomingScreen}
+          options={{
+            animation: 'slide_from_bottom',
+          }}
         />
         <Stack.Screen 
           name="Settings" 

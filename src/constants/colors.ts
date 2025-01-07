@@ -1,23 +1,21 @@
 import { ColorType } from '../types/calendar';
 
 export const COLORS: Record<ColorType, string> = {
-  red: '#FF5252',
-  orange: '#FF9800',
-  yellow: '#FFD600',
-  green: '#4CAF50',
-  cyan: '#00BCD4',
-  blue: '#2196F3',
-  purple: '#9C27B0',
-  gray: '#9E9E9E',
+  red: '#FF4D4F',
+  orange: '#FF7A45',
+  yellow: '#FFC53D',
+  green: '#73D13D',
+  blue: '#40A9FF',
+  purple: '#9254DE',
+  pink: '#F759AB',
 };
 
-export const COLOR_NAMES: Record<ColorType, string> = {
-  red: '红色',
-  orange: '橙色',
-  yellow: '黄色',
-  green: '绿色',
-  cyan: '青色',
-  blue: '蓝色',
-  purple: '紫色',
-  gray: '灰色',
+export const LIGHT_COLORS: Record<ColorType, string> = {
+  red: '#FFF1F0',
+  orange: '#FFF7E6',
+  yellow: '#FFFBE6',
+  green: '#F6FFED',
+  blue: '#E6F7FF',
+  purple: '#F9F0FF',
+  pink: '#FFF0F6',
 }; 

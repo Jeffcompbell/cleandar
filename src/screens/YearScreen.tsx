@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, useWindowDimensions, StatusBar } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, FAB } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { format, eachDayOfInterval, startOfYear, endOfYear, getDate, getMonth } from 'date-fns';
 import { Lunar } from 'lunar-typescript';
 import { DayCell } from '../components/calendar/DayCell';
@@ -10,14 +11,31 @@ import { DayEditModal } from '../components/calendar/DayEditModal';
 import { RootState } from '../store';
 import { setDayRecord } from '../store';
 import { ColorType, DayRecord } from '../types/calendar';
+import { RootStackScreenProps } from '../navigation/types';
 
 const MONTH_NAMES = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'];
 
 export const YearScreen = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const route = useRoute<RootStackScreenProps<'Year'>['route']>();
   const records = useSelector((state: RootState) => state.calendar.records);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const { width: screenWidth } = useWindowDimensions();
+
+  // 处理路由参数
+  useEffect(() => {
+    if (route.params?.selectedDate) {
+      setSelectedDate(route.params.selectedDate);
+    }
+  }, [route.params?.selectedDate]);
+
+  // 添加调试日志
+  useEffect(() => {
+    console.log('=== Records Updated ===');
+    console.log('Current Records:', JSON.stringify(records, null, 2));
+    console.log('====================');
+  }, [records]);
 
   const currentYear = new Date().getFullYear();
   const today = new Date();
@@ -39,7 +57,11 @@ export const YearScreen = () => {
   };
 
   const handleSaveRecord = (record: DayRecord) => {
-    dispatch(setDayRecord(record));
+    console.log('=== Saving Record ===');
+    console.log('Current Records:', JSON.stringify(records, null, 2));
+    console.log('New Record:', JSON.stringify(record, null, 2));
+    console.log('===================');
+    dispatch(setDayRecord({ date: record.date, record }));
     setSelectedDate(null);
   };
 
@@ -104,6 +126,15 @@ export const YearScreen = () => {
           </ScrollView>
         </View>
 
+        {/* 待办事项按钮 */}
+        <FAB
+          icon="calendar-check"
+          style={styles.fab}
+          onPress={() => navigation.navigate('Upcoming')}
+          color="#fff"
+        />
+
+        {/* 日期编辑弹窗 */}
         {selectedDate && (
           <DayEditModal
             visible={!!selectedDate}
@@ -177,5 +208,11 @@ const styles = StyleSheet.create({
   },
   emptyCellSpace: {
     height: 24,
+  },
+  fab: {
+    position: 'absolute',
+    right: 16,
+    bottom: 16,
+    backgroundColor: '#000',
   },
 }); 
